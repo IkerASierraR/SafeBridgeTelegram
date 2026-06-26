@@ -10,12 +10,11 @@ RUN apt-get update && apt-get install -y \
     gnupg \
     && rm -rf /var/lib/apt/lists/*
 
-# Instalar herramientas para MongoDB
-RUN curl -fsSL https://pgp.mongodb.com/server-7.0.asc | \
-   gpg -o /usr/share/keyrings/mongodb-server-7.0.gpg --dearmor && \
-   echo "deb [ signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg ] http://repo.mongodb.org/apt/debian bookworm/mongodb-org/7.0 main" | tee /etc/apt/sources.list.d/mongodb-org-7.0.list && \
-   apt-get update && apt-get install -y mongodb-database-tools && \
-   rm -rf /var/lib/apt/lists/*
+# Instalar herramientas para MongoDB desde binarios precompilados (Evita error de firma SHA1 de Debian Trixie)
+RUN curl -fsSL -o mongodb-tools.tgz https://fastdl.mongodb.org/tools/db/mongodb-database-tools-debian12-x86_64-100.9.4.tgz && \
+    tar -zxvf mongodb-tools.tgz && \
+    cp mongodb-database-tools-debian12-x86_64-100.9.4/bin/* /usr/local/bin/ && \
+    rm -rf mongodb-tools.tgz mongodb-database-tools-debian12-x86_64-100.9.4
 
 # Instalar mssql-tools18 para sqlcmd
 RUN curl https://packages.microsoft.com/keys/microsoft.asc | tee /etc/apt/trusted.gpg.d/microsoft.asc && \
