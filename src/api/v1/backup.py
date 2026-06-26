@@ -24,7 +24,7 @@ async def generar_backup(request: BackupRequest, background_tasks: BackgroundTas
     file_path, logs = await BackupService.generate_backup(request)
     
     if not os.path.exists(file_path):
-        raise BackupException("El archivo de backup no fue generado correctamente.")
+        raise BackupException(f"El archivo de backup no fue generado. Detalles: {logs}")
         
     # Agregamos tarea en background para limpiar el archivo una vez enviado
     background_tasks.add_task(remove_file, file_path)
