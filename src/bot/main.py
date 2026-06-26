@@ -45,7 +45,7 @@ async def command_backup_handler(message: types.Message) -> None:
     
     # Payload de ejemplo, aquí deberías recolectar los datos reales del usuario
     payload = {
-        "motor": "postgres",
+        "motor": "postgresql",
         "host": "tu_host",
         "puerto": 5432,
         "usuario": "tu_usuario",
